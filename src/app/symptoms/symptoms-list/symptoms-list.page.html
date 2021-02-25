@@ -1,13 +1,35 @@
-<ion-header class="ion-no-border">
+<ion-header>
   <ion-toolbar color="primary">
-    <ion-button slot="start">
-      <ion-menu-button class="iocon-only ">
-      </ion-menu-button>
-    </ion-button>
     <ion-title>Sintomas</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-
+  <ion-list>
+    <ion-item *ngFor = "let symptoms of symptoms  | async">
+      <ion-grid> <!-- <> -->
+        <ion-row>
+          <ion-col size="2"> <!-- <1> -->
+            <ion-avatar class="ion-align-self-start" *ngIf="symptoms.imgUrl">
+              <img [src]="symptoms.imgUrl" alt=""/>
+            </ion-avatar>
+            <span>{{ symptoms.name }}</span>
+          </ion-col>
+          <ion-col size="2"> <!-- <2> -->
+            <ion-button color="warning">
+              <ion-icon name="create-outline"></ion-icon>
+            </ion-button>
+          </ion-col>
+          <ion-col size="2"> <!-- <3> -->
+            <ion-button color="danger">
+              <ion-icon name="trash"></ion-icon>
+            </ion-button>
+          </ion-col>
+          <ion-col size="6"> <!-- <4> -->
+            <span [innerHTML]="symptoms.description"></span>
+          </ion-col>
+        </ion-row>
+      </ion-grid> <!-- </> -->
+    </ion-item>
+  </ion-list>
 </ion-content>

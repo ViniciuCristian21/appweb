@@ -1,6 +1,6 @@
-import { SymptomsService } from './../shared/symptoms.service';
 import { Component, OnInit } from '@angular/core';
-import { getAllLifecycleHooks } from '@angular/compiler/src/lifecycle_reflector';
+import { SymptomsService } from './../shared/symptoms.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-symptoms-list',
@@ -8,12 +8,17 @@ import { getAllLifecycleHooks } from '@angular/compiler/src/lifecycle_reflector'
   styleUrls: ['./symptoms-list.page.scss'],
 })
 export class SymptomsListPage implements OnInit {
-  // symptoms: Observable<any>[]>;
+
+  symptoms: Observable<any[]>;
 
   constructor(private symptomsService:SymptomsService) { }
 
   ngOnInit() {
+    this.getAll();
   }
 
+  getAll(){
+    this.symptoms = this.symptomsService.getAll();
+  }
 }
 

@@ -1,6 +1,6 @@
 export interface Symptoms{
   name?: string;
-  descrption?: string;
+  description?: string;
   imgUrl?: string;
   filePath?: string;
 }
