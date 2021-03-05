@@ -1,7 +1,8 @@
-import { Symptoms } from './interface/symptoms';
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { AngularFireStorage } from '@angular/fire/storage';
+// import { Symptoms } from './interface/symptoms';
+import { Symptoms } from './symptoms';
 import { map } from 'rxjs/operators';
 
 @Injectable({
@@ -10,34 +11,55 @@ import { map } from 'rxjs/operators';
 export class SymptomsService {
   private symptomsCollection: AngularFirestoreCollection<Symptoms>;
 
-  constructor(
-    private afs: AngularFirestore,
-    private storage: AngularFireStorage)
-    {
+  constructor(private afs: AngularFirestore,
+              private storage: AngularFireStorage){
       this.symptomsCollection = this.afs.collection<Symptoms>('symptoms');
-    }
-  getAll(){
-    return this.afs.collection('symptoms')
-      .snapshotChanges().pipe(
-        map( changes => {
-          return changes.map( s =>{
-            const id = s.payload.doc.id;
-            const data = s.payload.doc.data() as Symptoms
-            return { id, ...data };
-        })
-      })
-    )
   }
-  getByID(){
 
-  }
-  addSymptoms(){
+   getAll(){ // buscar todos
+      // return this.afs.collection('symptoms', ref => ref.orderBy('name','asc'))
+      return this.afs.collection('symptoms')
+        .snapshotChanges().pipe(
+          map( changes => {
+            return changes.map( s => {
+              const id = s.payload.doc.id;
+              const data = s.payload.doc.data() as Symptoms
+              return { id, ...data };
+            })
+          })
+        )
+   }
 
-  }
-  dleteSymptoms(){
+   getById(id: string){ // buscar por Id
 
-  }
-  deleteSymptoms(){
+   }
 
-  }
+   addSymptoms(symptoms: Symptoms){
+      // 1 momento
+      // console.log(symptoms)
+      // return this.symptomsCollection.add(symptoms);
+
+      // 2 momento
+      // criar id
+      const id = this.afs.createId();
+      const { name, description } = symptoms;
+
+      this.afs.collection('symptoms').doc(id).set(
+        {
+          name: name,
+          description: description,
+        }
+      )
+
+   }
+
+   updateSymptoms(){
+
+   }
+
+   deleteSymptoms(id: string){
+      this.symptomsCollection.doc<Symptoms>(id).delete();
+   }
+
+
 }

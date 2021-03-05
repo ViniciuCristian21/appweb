@@ -1,4 +1,4 @@
-export interface Symptoms{
+export class Symptoms {
   name?: string;
   description?: string;
   imgUrl?: string;
