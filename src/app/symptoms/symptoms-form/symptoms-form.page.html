@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-title>Form Sintomas</ion-title>
+    <ion-title>{{title}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -21,6 +21,7 @@
 
     <ion-button id="salvar" expand="block" type="submit" color="primary">Salvar</ion-button>
     <ion-button expand="block" [routerLink]="['/symptoms-list']" color="secondary">Cancelar</ion-button>
+    <ion-button expand="block" [routerLink]="['/login']" color="warning">Login</ion-button>
 
   </form>
 </ion-content>
