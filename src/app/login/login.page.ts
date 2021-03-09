@@ -1,8 +1,8 @@
+import { AuthService } from './../shared/auth.service';
 import { Router } from '@angular/router';
 import { ToastService } from './../shared/toast.service';
 import { Component, OnInit } from '@angular/core';
 import { Login } from '../users/shared/login';
-import { AuthService } from '../shared/auth.service';
 
 @Component({
   selector: 'app-login',

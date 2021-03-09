@@ -1,3 +1,4 @@
+import { AuthService } from './shared/auth.service';
 import { Component } from '@angular/core';
 @Component({
   selector: 'app-root',
@@ -13,5 +14,8 @@ export class AppComponent {
     // { title: 'Trash', url: '/folder/Trash', icon: 'trash' },
     // { title: 'Spam', url: '/folder/Spam', icon: 'warning' },
   ];
-  constructor() {}
+  constructor(private auth: AuthService) {}
+  logout(){
+    this.auth.logout();
+  }
 }
