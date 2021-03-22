@@ -11,8 +11,13 @@ import { SymptomsService } from '../shared/symptoms.service';
 })
 export class SymptomsFormPage implements OnInit {
   symptoms: Symptoms;
-  private symptomsId: string;
+  public symptomsId: string;
+  private file: File = null;
+
   title: string;
+  filePath: string = ''; // caminho do storage, a pasta que será gravada
+  imgUrl: string = ''; // url da imagem, <img [src]="imgUrl">
+  hasImg: Boolean = false;
 
   constructor(private activatedRoute: ActivatedRoute,
     private symptomsService: SymptomsService,
@@ -21,6 +26,10 @@ export class SymptomsFormPage implements OnInit {
 
   ngOnInit() {
     this.symptoms = new Symptoms();
+    this.symptoms.name = "";
+    this.symptoms.description = "";
+
+
     this.symptomsId = this.activatedRoute.snapshot.params['id'];
     this.symptomsId ? this.title = "EDITAR Sintoma" : this.title = "NOVO Sintoma";
 
@@ -30,40 +39,62 @@ export class SymptomsFormPage implements OnInit {
        const { name, description, imgUrl, filePath } = data;
        this.symptoms.name = name;
        this.symptoms.description = description;
+       this.filePath = filePath;
+       this.imgUrl = imgUrl;
+       this.hasImg = this.imgUrl == '' ? false : true;
      })
    }
-}
-    async onSubmit(){
-    console.log(this.symptoms)
-    this.symptomsId = this.activatedRoute.snapshot.params['id'];
-    if (this.symptomsId){
-      // update
-      try {
-        await this.symptomsService.updateSymptoms(this.symptoms, this.symptomsId);
-        // mensagem OK
-        this.toast.showMessageBottom('Sintoma alterado com sucesso!!!','success')
-        this.router.navigate(['/symptoms-list']);
-      } catch (error) {
-        // mensagem error
-        this.toast.showMessageTop(error, 'danger');
-        console.log(error);
-      }
-
+  }
+  // Adicionar arquivo dentro no banco
+  upload(event: any){
+    if(event.target.files.length){
+      this.file = event.target.files[0];
     } else {
-      // add
-      try {
-        await this.symptomsService.addSymptoms(this.symptoms);
-        // mensagem OK
-        this.toast.showMessageBottom('Sintomas inserido com sucesso!!!','success')
-        this.router.navigate(['/symptoms-list']);
-      } catch (error) {
-        // mensagem error
-        this.toast.showMessageTop(error, 'danger');
-        console.log(error);
-      }
-
+      this.file = null;
     }
   }
+  // Remover imagem
+  async removerImg(id: string, filePath: string){
+    try {
+      await this.symptomsService.removerImg(id, filePath);
+      this.imgUrl = '';
+      this.filePath = '';
+      this.hasImg = false;
+    } catch (error) {
+      this.toast.showMessageTop(error,'danger');
+    }
+ }
+ async onSubmit(){
+  // console.log(this.symptoms)
+
+  if (this.symptomsId){
+    // update
+    try {
+      await this.symptomsService.updateSymptoms(this.symptoms, this.symptomsId, this.file);
+      // mensagem OK
+      this.toast.showMessageBottom('Sintoma alterado com sucesso!!!','success')
+      this.router.navigate(['/symptoms-list']);
+    } catch (error) {
+      // mensagem error
+      this.toast.showMessageTop(error, 'danger');
+      console.log(error);
+    }
+
+  } else {
+    // add
+    try {
+      await this.symptomsService.addSymptoms(this.symptoms, this.file);
+      // mensagem OK
+      this.toast.showMessageBottom('Sintoma inserido com sucesso!!!','success')
+      this.router.navigate(['/symptoms-list']);
+    } catch (error) {
+      // mensagem error
+      this.toast.showMessageTop(error, 'danger');
+      console.log(error);
+    }
+
+  }
+}
 
 
 }

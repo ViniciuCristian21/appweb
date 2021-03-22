@@ -10,6 +10,7 @@ export class AppComponent {
     { title: 'Dashboard', url: 'dashboard', icon: 'home' },
     { title: 'Usuário', url: 'users', icon: 'people' },
     { title: 'Sintomas', url: 'symptoms-list', icon: 'bandage' },
+    { title: 'Atendimento', url: 'dashboard', icon: 'bag-add' },
     // { title: 'Archived', url: '/folder/Archived', icon: 'archive' },
     // { title: 'Trash', url: '/folder/Trash', icon: 'trash' },
     // { title: 'Spam', url: '/folder/Spam', icon: 'warning' },
